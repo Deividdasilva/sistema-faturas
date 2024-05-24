@@ -1,0 +1,28 @@
+# FROM node:16
+# WORKDIR /usr/src/app
+# COPY api/package*.json ./
+# RUN npm install
+# COPY api/ .
+# EXPOSE 3000
+# CMD ["npm", "start"]
+
+# Use a specific version of node based on your project's requirement
+FROM node:16
+
+# Create app directory
+WORKDIR /usr/src/app
+
+# Install app dependencies by copying
+# package.json and package-lock.json (or yarn.lock)
+COPY api/package*.json ./
+RUN npm install
+
+# Bundle app source
+COPY api/ .
+
+# Expose the port the app runs on
+EXPOSE 3000
+
+# Command to run the app
+CMD ["npm", "run", "dev"]
+
