@@ -7,52 +7,28 @@ import { mapToOptional } from '../services/mapToOptional';
 import sequelize from '../config/database';
 import { Optional } from 'sequelize';
 
-// Função para extrair faturas do arquivo PDF e inserir no banco
 // export const extractAndSaveInvoices = async (req: Request, res: Response) => {
 //     if (!req.file) {
 //         return res.status(400).json({ message: 'No file provided' });
 //     }
 
+//     const transaction = await sequelize.transaction();
 //     try {
-//         // Extrair dados do arquivo PDF
 //         const filePath = req.file.path;
-//         const invoicesData = await extractDataFromPDF(filePath);
+//         const extractedData = await extractDataFromPDF(filePath);
+//         const invoicesData = parseInvoiceData(extractedData.data);
+//         const optionalInvoices = mapToOptional(invoicesData);
 
-//         // Inserir dados no banco usando o modelo Invoice
-//         const invoices = await Invoice.bulkCreate(invoicesData);
+//         const invoices = await Invoice.bulkCreate(optionalInvoices, { transaction });
+//         await transaction.commit();
 //         res.status(201).json(invoices);
 //     } catch (error: any) {
+//         await transaction.rollback();
 //         console.error('Error extracting or saving invoices:', error);
 //         res.status(500).json({ message: 'Failed to extract or save invoices', error: error.message });
 //     }
 // };
 
-
-// export const extractAndSaveInvoices = async (req: Request, res: Response) => {
-//     if (!req.file) {
-//         return res.status(400).json({ message: 'No file provided' });
-//     }
-
-//     const transaction = await sequelize.transaction(); // Inicia uma transação
-
-//     console.log('99999999999999999999999');
-
-//     try {
-//         const filePath = req.file.path;
-//         const invoicesData = await extractDataFromPDF(filePath); // Supõe que esta função retorna os dados no formato correto
-//         console.log(invoicesData, 'invoicesData');
-//         const invoices = await Invoice.bulkCreate(invoicesData, { transaction }); // Insere dados dentro da transação
-//         await transaction.commit(); // Commit da transação se tudo correr bem
-//         res.status(201).json(invoices);
-//         console.log('aquiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
-//     } catch (error: any) {
-//         await transaction.rollback(); // Rollback da transação em caso de erro
-//         console.error('Error extracting or saving invoices:', error);
-//         res.status(500).json({ message: 'Failed to extract or save invoices', error: error.message });
-//     }
-// };
-
-// Funciona
 export const extractAndSaveInvoices = async (req: Request, res: Response) => {
     if (!req.file) {
         return res.status(400).json({ message: 'No file provided' });
@@ -63,6 +39,7 @@ export const extractAndSaveInvoices = async (req: Request, res: Response) => {
         const filePath = req.file.path;
         const extractedData = await extractDataFromPDF(filePath);
         const invoicesData = parseInvoiceData(extractedData.data);
+        console.log(invoicesData, 'invoicesDataaaaaaaaaaaaa');
         const optionalInvoices = mapToOptional(invoicesData);
 
         const invoices = await Invoice.bulkCreate(optionalInvoices, { transaction });
@@ -83,24 +60,17 @@ export const extractAndSaveInvoices = async (req: Request, res: Response) => {
 //     const transaction = await sequelize.transaction();
 //     try {
 //       const filePath = req.file.path;
-//       const extractedData = await extractDataFromPDF(filePath);
-//       const invoicesData = parseInvoiceData(extractedData.data);
-//       const adaptedInvoicesData = adaptInvoiceData(invoicesData);
-  
-//       // Use upsert para evitar duplicação
-//       for (const invoice of adaptedInvoicesData) {
-//         await Invoice.upsert(invoice, { transaction });
-//       }
-  
+//       const extractedText = await extractDataFromPDF(filePath);
+//       const invoicesData = parseInvoiceData(extractedText);
+//       const invoices = await Invoice.bulkCreate(invoicesData, { transaction });
 //       await transaction.commit();
-//       res.status(201).json({ message: 'Invoices processed successfully' });
+//       res.status(201).json(invoices);
 //     } catch (error: any) {
 //       await transaction.rollback();
 //       console.error('Error extracting or saving invoices:', error);
 //       res.status(500).json({ message: 'Failed to extract or save invoices', error: error.message });
 //     }
 //   };
-  
 
 // Obter todas as faturas
 export const getAllInvoices = async (req: Request, res: Response) => {
@@ -152,6 +122,78 @@ export const extractInvoices = async (req: Request, res: Response) => {
         res.status(500).json({ message: 'Failed to extract invoices', error: error.message || 'Unknown error' });
     }
 };
+
+
+// Função para extrair faturas do arquivo PDF e inserir no banco
+// export const extractAndSaveInvoices = async (req: Request, res: Response) => {
+//     if (!req.file) {
+//         return res.status(400).json({ message: 'No file provided' });
+//     }
+
+//     try {
+//         // Extrair dados do arquivo PDF
+//         const filePath = req.file.path;
+//         const invoicesData = await extractDataFromPDF(filePath);
+
+//         // Inserir dados no banco usando o modelo Invoice
+//         const invoices = await Invoice.bulkCreate(invoicesData);
+//         res.status(201).json(invoices);
+//     } catch (error: any) {
+//         console.error('Error extracting or saving invoices:', error);
+//         res.status(500).json({ message: 'Failed to extract or save invoices', error: error.message });
+//     }
+// };
+
+
+// export const extractAndSaveInvoices = async (req: Request, res: Response) => {
+//     if (!req.file) {
+//         return res.status(400).json({ message: 'No file provided' });
+//     }
+
+//     const transaction = await sequelize.transaction(); // Inicia uma transação
+
+//     console.log('99999999999999999999999');
+
+//     try {
+//         const filePath = req.file.path;
+//         const invoicesData = await extractDataFromPDF(filePath); // Supõe que esta função retorna os dados no formato correto
+//         console.log(invoicesData, 'invoicesData');
+//         const invoices = await Invoice.bulkCreate(invoicesData, { transaction }); // Insere dados dentro da transação
+//         await transaction.commit(); // Commit da transação se tudo correr bem
+//         res.status(201).json(invoices);
+//         console.log('aquiiiiiiiiiiiiiiiiiiiiiiiiiiiii');
+//     } catch (error: any) {
+//         await transaction.rollback(); // Rollback da transação em caso de erro
+//         console.error('Error extracting or saving invoices:', error);
+//         res.status(500).json({ message: 'Failed to extract or save invoices', error: error.message });
+//     }
+// };
+
+// export const extractAndSaveInvoices = async (req: Request, res: Response) => {
+//     if (!req.file) {
+//       return res.status(400).json({ message: 'No file provided' });
+//     }
+  
+//     const transaction = await sequelize.transaction();
+//     try {
+//       const filePath = req.file.path;
+//       const extractedData = await extractDataFromPDF(filePath);
+//       const invoicesData = parseInvoiceData(extractedData.data);
+//       const adaptedInvoicesData = adaptInvoiceData(invoicesData);
+  
+//       // Use upsert para evitar duplicação
+//       for (const invoice of adaptedInvoicesData) {
+//         await Invoice.upsert(invoice, { transaction });
+//       }
+  
+//       await transaction.commit();
+//       res.status(201).json({ message: 'Invoices processed successfully' });
+//     } catch (error: any) {
+//       await transaction.rollback();
+//       console.error('Error extracting or saving invoices:', error);
+//       res.status(500).json({ message: 'Failed to extract or save invoices', error: error.message });
+//     }
+//   };
 
 
 

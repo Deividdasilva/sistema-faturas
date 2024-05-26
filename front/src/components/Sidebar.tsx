@@ -25,6 +25,12 @@ const Menu: React.FC = () => {
                         Extrair Fatura
                     </NavLink>
                 </li>
+                <li>
+                    <NavLink to="/list" style={{ padding: '15px', display: 'flex', alignItems: 'center', textDecoration: 'none', color: 'white' }}>
+                        <FontAwesomeIcon icon={faHome} style={{ marginRight: '10px' }} />
+                        Faturas
+                    </NavLink>
+                </li>
             </ul>
         </div>
     );

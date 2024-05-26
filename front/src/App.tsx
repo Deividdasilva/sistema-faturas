@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Sidebar from './components/Sidebar';
 import Dashboard from './components/Dashboard';
 import ExtractInvoice from './components/ExtractInvoice';
+import InvoiceList from './components/InvoiceList';
 import './App.css';
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/extract-invoice" element={<ExtractInvoice />} />
+            <Route path="/list" element={<InvoiceList />} />
           </Routes>
         </div>
       </div>

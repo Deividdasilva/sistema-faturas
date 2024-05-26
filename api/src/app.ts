@@ -119,11 +119,43 @@
 // export default app;
 
 // app.ts
+// import express from 'express';
+// import bodyParser from 'body-parser';
+// import cors from 'cors';
+// import apiRoutes from './routes/indexRoutes';
+// import sequelize from './config/database';  // Importando a instância de conexão do Sequelize
+
+// const app = express();
+// const PORT = process.env.PORT || 3000;
+
+// app.use(cors());
+// app.use(bodyParser.json());
+// app.use('/api', apiRoutes);
+
+// app.get('/', (req, res) => {
+//   res.send('API is running...');
+// });
+
+
+// // sequelize.sync({ force: true }).then(() => {
+// //   console.log('Database & tables created!');
+// // }).catch(error => {
+// //   console.error('Failed to create database & tables:', error);
+// // });
+
+// //Sincronizar todos os modelos com o banco de dados
+// sequelize.sync().then(() => {
+//   console.log('Drop and re-sync db.');
+//   app.listen(PORT, () => {
+//     console.log(`Server running on port ${PORT}`);
+//   });
+// });
+
 import express from 'express';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import apiRoutes from './routes/indexRoutes';
-import sequelize from './config/database';  // Importando a instância de conexão do Sequelize
+import sequelize from './config/database';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -136,20 +168,15 @@ app.get('/', (req, res) => {
   res.send('API is running...');
 });
 
-
-// sequelize.sync({ force: false }).then(() => {
-//   console.log('Database & tables created!');
-// }).catch(error => {
-//   console.error('Failed to create database & tables:', error);
-// });
-
-// Sincronizar todos os modelos com o banco de dados
 sequelize.sync().then(() => {
-  console.log('Drop and re-sync db.');
+  console.log('Database & tables created!');
   app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`);
   });
+}).catch(error => {
+  console.error('Failed to create database & tables:', error);
 });
+
 
 
 
