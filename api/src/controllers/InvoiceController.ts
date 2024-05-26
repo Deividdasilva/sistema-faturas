@@ -7,27 +7,6 @@ import { mapToOptional } from '../services/mapToOptional';
 import sequelize from '../config/database';
 import { Optional } from 'sequelize';
 
-// export const extractAndSaveInvoices = async (req: Request, res: Response) => {
-//     if (!req.file) {
-//         return res.status(400).json({ message: 'No file provided' });
-//     }
-
-//     const transaction = await sequelize.transaction();
-//     try {
-//         const filePath = req.file.path;
-//         const extractedData = await extractDataFromPDF(filePath);
-//         const invoicesData = parseInvoiceData(extractedData.data);
-//         const optionalInvoices = mapToOptional(invoicesData);
-
-//         const invoices = await Invoice.bulkCreate(optionalInvoices, { transaction });
-//         await transaction.commit();
-//         res.status(201).json(invoices);
-//     } catch (error: any) {
-//         await transaction.rollback();
-//         console.error('Error extracting or saving invoices:', error);
-//         res.status(500).json({ message: 'Failed to extract or save invoices', error: error.message });
-//     }
-// };
 
 export const extractAndSaveInvoices = async (req: Request, res: Response) => {
     if (!req.file) {
@@ -52,33 +31,26 @@ export const extractAndSaveInvoices = async (req: Request, res: Response) => {
     }
 };
 
-// export const extractAndSaveInvoices = async (req: Request, res: Response) => {
-//     if (!req.file) {
-//       return res.status(400).json({ message: 'No file provided' });
-//     }
-  
-//     const transaction = await sequelize.transaction();
-//     try {
-//       const filePath = req.file.path;
-//       const extractedText = await extractDataFromPDF(filePath);
-//       const invoicesData = parseInvoiceData(extractedText);
-//       const invoices = await Invoice.bulkCreate(invoicesData, { transaction });
-//       await transaction.commit();
-//       res.status(201).json(invoices);
-//     } catch (error: any) {
-//       await transaction.rollback();
-//       console.error('Error extracting or saving invoices:', error);
-//       res.status(500).json({ message: 'Failed to extract or save invoices', error: error.message });
-//     }
-//   };
 
 // Obter todas as faturas
+// export const getAllInvoices = async (req: Request, res: Response) => {
+//     try {
+//         const invoices = await Invoice.findAll();
+//         res.json(invoices);
+//     } catch (error: any) { // Uso de 'any' temporariamente
+//         console.error('Error getting all invoices:', error);
+//         res.status(500).json({ message: 'Failed to get invoices', error: error.message || 'Unknown error' });
+//     }
+// };
+
 export const getAllInvoices = async (req: Request, res: Response) => {
     try {
-        const invoices = await Invoice.findAll();
+        const clientNumber = req.query.clientNumber as string;
+        const condition = clientNumber ? { clientNumber } : undefined;
+        const invoices = await Invoice.findAll({ where: condition });
         res.json(invoices);
-    } catch (error: any) { // Uso de 'any' temporariamente
-        console.error('Error getting all invoices:', error);
+    } catch (error: any) {
+        console.error('Error getting invoices:', error);
         res.status(500).json({ message: 'Failed to get invoices', error: error.message || 'Unknown error' });
     }
 };

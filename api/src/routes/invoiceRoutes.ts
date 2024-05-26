@@ -37,10 +37,8 @@
 // export default router;
 
 import express from 'express';
-// import invoiceRoutes from './invoiceRoutes';
 import pdfRoutes from './pdfRoutes';
 import multer from 'multer';
-// import { handlePDFExtraction } from '../controllers/extractController';
 import { extractAndSaveInvoices, getAllInvoices } from '../controllers/InvoiceController';
 
 const router = express.Router();
@@ -48,26 +46,6 @@ const upload = multer({ dest: 'uploads/' });
 
 router.get('/list', getAllInvoices);
 router.post('/extract-invoice', upload.single('file'), extractAndSaveInvoices);
-// router.post('/extract-invoice', 
-//     (req, res, next) => {
-//         console.log('Middleware 1: Antes do upload');
-//         next();
-//     }, 
-//     upload.single('file'), 
-//     (req, res, next) => {
-//         console.log('Middleware 2: Arquivo Recebido:', req.file);
-//         if (!req.file) {
-//             console.log('Nenhum arquivo recebido');
-//             return res.status(400).json({ message: 'No file provided' });
-//         }
-//         next();
-//     }, 
-//     (req, res, next) => {
-//         console.log('Middleware 3: Antes do extractAndSaveInvoices');
-//         next();
-//     }, 
-//     extractAndSaveInvoices
-// );
 
 export default router;
 
