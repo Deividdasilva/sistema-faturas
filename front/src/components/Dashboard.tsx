@@ -119,7 +119,7 @@ const Dashboard = () => {
         <h2>Dashboard de Consumo de Energia</h2>
         <Bar data={chartData} options={{ responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }} />
       </div>
-      <div style={{ width: '90%', height: '35%', padding: '40px' }}>
+      <div style={{ width: '90%', height: '35%', padding: '40px', marginTop: '20px' }}>
         <h2>Dashboard Financeiro</h2>
         <Bar data={valueChartData} options={{ responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true } } }} />
       </div>

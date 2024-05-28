@@ -64,6 +64,48 @@
 #     depends_on:
 #       - api
 
+# version: '3.8'
+# services:
+#   postgres:
+#     image: postgres:12
+#     environment:
+#       POSTGRES_DB: mydatabase
+#       POSTGRES_USER: user
+#       POSTGRES_PASSWORD: password
+#     ports:
+#       - "5432:5432"
+#   api:
+#     build:
+#       context: ../
+#       dockerfile: docker/Dockerfile.api
+#     volumes:
+#       # - ./api/uploads:/usr/uploads
+#       # - ./api/uploads:/usr/src/app/uploads
+#       - ../api:/usr/src/app
+#     ports:
+#       - "3000:3000"
+#     environment:
+#       DB_HOST: postgres
+#       POSTGRES_DB: mydatabase
+#       POSTGRES_USER: user
+#       POSTGRES_PASSWORD: password
+#       DB_PORT: 5432
+#     depends_on:
+#       - postgres
+#   front:
+#     build:
+#       context: ../
+#       dockerfile: docker/Dockerfile.front
+#     volumes:
+#       - ../front:/usr/src/app
+#     ports:
+#       - "3001:3000"
+#     environment:
+#       - CHOKIDAR_USEPOLLING=true
+#       - FAST_REFRESH=false
+#     depends_on:
+#       - api
+
 version: '3.8'
 services:
   postgres:
@@ -74,15 +116,12 @@ services:
       POSTGRES_PASSWORD: password
     ports:
       - "5432:5432"
-    networks:
-      - app-network
+
   api:
     build:
       context: ../
       dockerfile: docker/Dockerfile.api
     volumes:
-      # - ./api/uploads:/usr/uploads
-      # - ./api/uploads:/usr/src/app/uploads
       - ../api:/usr/src/app
     ports:
       - "3000:3000"
@@ -92,10 +131,25 @@ services:
       POSTGRES_USER: user
       POSTGRES_PASSWORD: password
       DB_PORT: 5432
-    networks:
-      - app-network
     depends_on:
       - postgres
+
+  api-test:
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile.test
+    volumes:
+      - ../api:/usr/src/app
+    environment:
+      DB_HOST: postgres
+      POSTGRES_DB: mydatabase
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      DB_PORT: 5432
+    depends_on:
+      - postgres
+    command: npm test
+
   front:
     build:
       context: ../
@@ -105,11 +159,9 @@ services:
     ports:
       - "3001:3000"
     environment:
-      - CHOKIDAR_USEPOLLING=true
-      - FAST_REFRESH=false
+      CHOKIDAR_USEPOLLING: "true"
+      FAST_REFRESH: "false"
     depends_on:
       - api
-networks:
-  app-network:
-    driver: bridge
+
 
