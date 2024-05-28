@@ -1,11 +1,3 @@
-# # Usando Node.js como exemplo
-# FROM node:14
-# WORKDIR /app
-# COPY package*.json ./
-# RUN npm install
-# COPY . .
-# CMD ["npm", "test"]
-# Using Node.js as an example
 FROM node:14
 WORKDIR /usr/src/app
 COPY package*.json ./
