@@ -13,12 +13,11 @@ RUN npm install
 
 # Bundle app source
 # COPY api/ .
-COPY . .
-
+COPY api/ .
 
 # Expose the port the app runs on
 EXPOSE 3000
 
 # Command to run the app
-CMD ["npm","run", "dev"]
+CMD ["sh", "-c", "npm install && npm run dev"]
 

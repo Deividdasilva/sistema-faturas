@@ -6,7 +6,7 @@
     "scripts": {
       "start": "node dist/app.js",
       "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/app.ts",
-      "test": "jest src/tests/controllers/invoiceController.test.ts"
+      "test": "npx jest src/tests/controllers/invoiceController.test.ts"
     },
     "keywords": [],
     "author": "",
