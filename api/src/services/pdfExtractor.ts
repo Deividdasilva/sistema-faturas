@@ -58,7 +58,7 @@ const extractDataFromPDF = async (filePath: string): Promise<any> => {
 
         // Melhorar a formatação do texto extraído
         const formattedText = formatExtractedText(data.text);
-        console.log(formattedText);  // Exibe o texto extraído e formatado do PDF no console
+        //console.log(formattedText);  // Exibe o texto extraído e formatado do PDF no console
 
         return { data: formattedText };
     } catch (error) {

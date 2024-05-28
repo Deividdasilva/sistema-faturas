@@ -307,17 +307,7 @@
 //   }
 
 
-export interface InvoiceData {
-    clientNumber: number;
-    referenceMonth: string;
-    electricEnergyKWh: number;
-    electricEnergyValue: number;
-    screeEnergyKWh: number;
-    screeEnergyValue: number;
-    compensatedEnergyKWh: number;
-    compensatedEnergyValue: number;
-    municipalPublicLightingContribution: number;
-}
+
 
 // export function parseInvoiceData(text: string): InvoiceData[] {
 //     const invoices: InvoiceData[] = [];
@@ -790,6 +780,18 @@ export interface InvoiceData {
 //     return invoices;
 // }
 
+
+export interface InvoiceData {
+    clientNumber: number;
+    referenceMonth: string;
+    electricEnergyKWh: number;
+    electricEnergyValue: number;
+    screeEnergyKWh: number;
+    screeEnergyValue: number;
+    compensatedEnergyKWh: number;
+    compensatedEnergyValue: number;
+    municipalPublicLightingContribution: number;
+}
 
 export function parseInvoiceData(text: string): InvoiceData[] {
     const invoices: InvoiceData[] = [];
